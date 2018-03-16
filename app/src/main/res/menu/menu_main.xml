@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.harshgupta.dontmissaclass.MainActivity">
+    <item
+        android:id="@+id/notification"
+        android:checked="false"
+        android:title="Notification"
+        app:showAsAction="always"
+        android:checkable="true"/>
+        <!--android:icon="@drawable/ic_star_border_black_24dp"-->
+
+
+</menu>
