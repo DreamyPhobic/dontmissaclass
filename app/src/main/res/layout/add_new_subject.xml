@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context="com.example.harshgupta.dontmissaclass.MainActivity">
@@ -14,55 +13,71 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="Add new Subject"
+
         android:textAlignment="center"
-        android:textColor="#ffff"
-        android:textSize="28sp" />
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/subjectName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:ems="10"
         android:hint="Subject Name"
-        android:inputType="textPersonName"
-        android:textColor="#ffff"
-        android:textColorHint="#ffff" />
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/Present"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:ems="10"
         android:hint="Presents till now..."
-        android:inputType="number"
-        android:textColor="#ffff"
-        android:textColorHint="#ffff" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/Absent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:ems="10"
         android:hint="Absent till now..."
-        android:inputType="number"
-        android:textColor="#ffff"
-        android:textColorHint="#ffff" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/subjectImageLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:ems="10"
         android:hint="Image url"
-        android:inputType="textUri"
-        android:textColor="#ffff"
-        android:textColorHint="#ffff" />
+        android:inputType="textUri" />
+
+    <Button
+        android:id="@+id/preview_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/ic_launcher_background"
+        android:text="Preview Image"
+        android:textColor="#ffff" />
+
+    <ImageView
+        android:id="@+id/iv_imagePreview"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="7dp"
+        app:srcCompat="@drawable/imagepreview" />
 
     <Button
         android:id="@+id/addNewSubjectButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:background="@color/themeColor"
         android:text="Add Subject"
         android:textColor="#ffff" />

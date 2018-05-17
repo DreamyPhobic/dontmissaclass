@@ -1,5 +1,6 @@
 package com.example.harshgupta.dontmissaclass;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,13 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.downloader.request.DownloadRequest;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.net.URL;
 
 import static java.lang.Integer.parseInt;
@@ -30,7 +34,9 @@ public class AddSubjectActivity extends AppCompatActivity {
     private EditText mPresentEditText;
     private EditText mAbsentEditText;
     private EditText mImageEditText;
+    private Button mPreviewBtn;
     private Button mAddBtn;
+    ImageView SubjectImageImgV;
 
     private SubjectDBhelper dbHelper;
     String subjectname;
@@ -45,20 +51,31 @@ public class AddSubjectActivity extends AppCompatActivity {
         mPresentEditText = (EditText) findViewById(R.id.Present);
         mAbsentEditText = (EditText) findViewById(R.id.Absent);
         mImageEditText = (EditText) findViewById(R.id.subjectImageLink);
+        mPreviewBtn = (Button) findViewById(R.id.preview_image);
         mAddBtn = (Button) findViewById(R.id.addNewSubjectButton);
+        SubjectImageImgV=(ImageView) findViewById(R.id.iv_imagePreview);
 
         //listen to add button click
-        mAddBtn.setOnClickListener(new View.OnClickListener() {
+        mPreviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //call the save Subject method
-                saveSubject();
+                preview();
+
+            }
+        });
+        mAddBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                boolean res =saveSubject();
+                if(res)
+                   goBackHome();
             }
         });
 
     }
 
-    private void saveSubject() {
+    private boolean saveSubject() {
         String name = mNameEditText.getText().toString().trim();
         subjectname=name;
         String present = mPresentEditText.getText().toString().trim();
@@ -69,27 +86,26 @@ public class AddSubjectActivity extends AppCompatActivity {
         if (name.isEmpty()) {
             //error name is empty
             Toast.makeText(this, "You must enter a name", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         if (present.isEmpty()) {
             //error name is empty
-            Toast.makeText(this, "You must enter an age", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, "You must enter presents till now", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         if (absent.isEmpty()) {
             //error name is empty
-            Toast.makeText(this, "You must enter an occupation", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(this, "You must enter absents till now", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         if (image.isEmpty()) {
             //error name is empty
             Toast.makeText(this, "You must enter an image link", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
-        new downloadImage().execute(image,null,null);
         int presentInt = parseInt(present);
         int absentInt = parseInt(absent);
         int totalInt = presentInt + absentInt;
@@ -97,9 +113,14 @@ public class AddSubjectActivity extends AppCompatActivity {
         //create new Subject
         Subject Subject = new Subject(name, presentInt, absentInt, totalInt, image);
         dbHelper.saveNewSubject(Subject);
+        return true;
         //finally redirect back home
         // NOTE you can implement an sqlite callback then redirect on success delete
-        goBackHome();
+
+    }
+    private void preview(){
+        String image = mImageEditText.getText().toString().trim();
+        new downloadImage().execute(image,null,null);
     }
 
     private class downloadImage extends AsyncTask<String,Void,Void> {
@@ -108,13 +129,27 @@ public class AddSubjectActivity extends AppCompatActivity {
             String cacheDir = "/storage/emulated/0/DMC_Images";
             Log.d("path",cacheDir);
             //String dirPath = Utils.getRootDirPath(getApplicationContext());
-            String site=strings[0];
-
-            int downloadId = PRDownloader.download(site, cacheDir,subjectname).build()
+            final String site=strings[0];
+            final String name = mNameEditText.getText().toString().trim();
+            int downloadId = PRDownloader.download(site, getCacheDir().toString(),name).build()
                     .start(new OnDownloadListener() {
                         @Override
                         public void onDownloadComplete() {
                             Toast.makeText(AddSubjectActivity.this,"Download Complete",Toast.LENGTH_SHORT).show();
+                            if(!(site.isEmpty())){
+                                File file = new File(getCacheDir().toString()+"/"+name);
+                                Context mContext=getBaseContext();
+                                if(!file.exists()){
+                                    Picasso.with(mContext).load(site).placeholder(R.mipmap.ic_launcher).into(SubjectImageImgV);
+                                    Toast.makeText(mContext,"Loaded from internet",Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Picasso.with(mContext).load(file).placeholder(R.mipmap.ic_launcher).into(SubjectImageImgV);
+                                    Toast.makeText(mContext,"Loaded from file",Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
                         }
 
                         @Override
@@ -127,6 +162,8 @@ public class AddSubjectActivity extends AppCompatActivity {
     }
 
     private void goBackHome() {
+        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
         finish();
     }
 }

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 
 import java.util.Calendar;
 
@@ -35,6 +36,7 @@ public class MyService extends Service {
         return null;
     }
 
+
     public void scheduleNotification(Notification notification, int state) {
 
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
@@ -43,8 +45,8 @@ public class MyService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
-        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.MINUTE, 9);
 
 
         // long futureInMillis = SystemClock.elapsedRealtime() + delay;

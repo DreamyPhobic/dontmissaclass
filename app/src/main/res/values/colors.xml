@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#4db6ac</color>
     <color name="afterClick">#6b0829</color>
-    <color name="themeColor">#2d5871</color>
-    <color name="statusBar">#1A3442</color>
+    <color name="themeColor">#2e566e</color>
+    <color name="statusBar">#1a3442</color>
     <color name="cardview_color">#2d3762</color>
 </resources>

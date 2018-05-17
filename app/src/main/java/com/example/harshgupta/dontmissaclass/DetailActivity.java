@@ -94,10 +94,18 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //startActivity(new Intent(DetailActivity.this, MainActivity.class));
+                startActivity(new Intent(DetailActivity.this, MainActivity.class));
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(DetailActivity.this, MainActivity.class));
+        finish();
+
     }
 
     private void refresh() {

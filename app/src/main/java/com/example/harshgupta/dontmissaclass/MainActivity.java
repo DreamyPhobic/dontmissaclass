@@ -1,6 +1,7 @@
 package com.example.harshgupta.dontmissaclass;
 
 import android.app.AlarmManager;
+import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -112,13 +113,16 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                final int idk=viewHolder.getAdapterPosition();
+                final Subject temp=Dataset.get(idk);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage(R.string.delete_message)
+                        .setCancelable(false)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Delete the Subject
-                                int idk=viewHolder.getAdapterPosition();
+
                                 Log.d("idtoremove",String.valueOf(idk));
                                 Subject temp=Dataset.get(idk);
                                 int resId=temp.getID();
@@ -128,17 +132,16 @@ public class MainActivity extends AppCompatActivity {
                                 dbHelper.deleteSubjectRecord(resId,MainActivity.this);
                                 Dataset.remove(idk);
                                 Log.d("totalitems",String.valueOf(dbHelper.getallCount()));
-                                //adapter.notifyItemRemoved(id);
+                                adapter.notifyItemRemoved(idk);
                                 //adapter.notifyDataSetChanged();
 //                               Log.d("totalitems",String.valueOf(dbHelper.getSubjectsCount()));
 //                               mAdapter.notifyItemRangeChanged(0,dbHelper.getSubjectsCount());
-                                setAdapter();
+
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                                setAdapter();
+                                adapter.notifyDataSetChanged();
                             }
                         });
                 // Create the AlertDialog object and return it
@@ -158,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
+                finish();
             }
         });
     }
@@ -224,8 +228,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+        setAdapter();
+
     }
+
+
 
     public void setAdapter(){
         adapter = new SubjectAdapter(Dataset, this, mRecyclerView);

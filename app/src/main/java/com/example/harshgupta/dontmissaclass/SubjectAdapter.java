@@ -29,6 +29,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     private RecyclerView mRecyclerV;
 
 
+
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -52,7 +54,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     }
 
     public void add(int position, Subject Subject) {
-        mPeopleList.add(position, Subject);
+        mPeopleList.add(position,Subject);
         notifyItemInserted(position);
     }
 
